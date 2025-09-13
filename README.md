@@ -1,0 +1,1 @@
+Backend for a Real-Time News Delivery System built with Node.js, Express, PostgreSQL, and WebSockets. Features include JWT authentication, role-based access control, Google login, Supports publisher-user model, topic subscriptions, comments, reporting system, and personalized news delivery in real-time.
