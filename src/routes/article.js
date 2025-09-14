@@ -4,7 +4,7 @@ import { protect, authorize } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", protect, authorize("publisher"), createArticle);
+router.post("/", protect, authorize("publisher"),createArticle);
 router.get("/", protect, getAllArticles);
 router.get("/:id", protect, getArticleById);
 
