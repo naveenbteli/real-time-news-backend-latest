@@ -13,20 +13,29 @@ const CATEGORY_API = process.env.CATEGORY_API;   // Example: "http://ml-server.c
 export const checkIfFakeArticle = async (title, content) => {
   try {
     const response = await axios.post(FAKE_NEWS_API, {
-      title,
-      content,
+      text: `${title} ${content}`, // ✅ Correct format
     });
 
-    if (response.data?.isFake === undefined) {
-      throw new Error("Invalid response from Fake News API");
+    // Extract and normalize the prediction
+    const prediction = response.data?.prediction;
+
+    if (prediction === undefined) {
+      console.warn("Fake News API returned an unexpected response, defaulting to genuine.");
+      return false; // Default to 'not fake' if invalid response
     }
 
-    return response.data.isFake;
+    // Convert string to boolean
+    return prediction === "true";
   } catch (error) {
     console.error("Fake News API Error:", error.message);
-    throw new Error("Unable to verify article authenticity");
+    console.warn("Unable to verify article authenticity, defaulting to genuine.");
+
+    // Default to genuine if verification fails
+    return false;
   }
 };
+
+
 
 /**
  * Predict the category of the article using ML API
@@ -36,18 +45,28 @@ export const checkIfFakeArticle = async (title, content) => {
  */
 export const predictCategory = async (title, content) => {
   try {
+    console.log("Request Payload:", `${title} ${content}`);
     const response = await axios.post(CATEGORY_API, {
-      title,
-      content,
+      text: `${title} ${content}`, // ✅ Send in the correct format
     });
 
-    if (!response.data?.category) {
-      throw new Error("Invalid response from Category API");
+    // Extract the predicted category properly
+    const predictedCategory = response.data?.predicted_category;
+    console.log(response);
+    // Fallback to "General" if response is invalid
+    if (!predictedCategory) {
+      console.warn("Category API returned invalid response. Defaulting to 'General'.");
+      return "General";
     }
 
-    return response.data.category;
+    return predictedCategory;
   } catch (error) {
     console.error("Category Prediction API Error:", error.message);
-    throw new Error("Unable to predict article category");
+    console.warn("Unable to predict article category. Defaulting to 'General'.");
+
+    // Fallback to default category when API call fails
+    return "General";
   }
 };
+
+
