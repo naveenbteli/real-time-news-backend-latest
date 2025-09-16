@@ -14,7 +14,7 @@ export const checkIfFakeArticle = async (title, content) => {
   try {
     const response = await axios.post(FAKE_NEWS_API, {
       text: `${title} ${content}`, // ✅ Correct format
-    });
+    },{ timeout: 5000 });
 
     // Extract and normalize the prediction
     const prediction = response.data?.prediction;

@@ -7,6 +7,7 @@ import { Server } from "socket.io";
 import authRoutes from "./routes/auth.js";
 import articleRoutes from "./routes/article.js";
 
+
 dotenv.config();
 
 const app = express();
@@ -25,6 +26,7 @@ app.get("/health", (req, res) => res.json({ status: "OK", message: "Backend is r
 app.use("/auth", authRoutes);     // -> /auth/login, /auth/register
 app.use("/articles", articleRoutes); // -> /articles (no duplication now)
 
+
 // Socket.io
 io.on("connection", (socket) => {
   console.log("New client connected:", socket.id);
@@ -36,6 +38,8 @@ io.on("connection", (socket) => {
   
   socket.on("disconnect", () => console.log("Client disconnected:", socket.id));
 });
+
+
 
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

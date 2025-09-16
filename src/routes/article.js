@@ -8,6 +8,7 @@ import {
 } from "../controllers/articleController.js";
 
 import { subscribeToTopic } from "../controllers/subscribeController.js";
+import { unsubscribeToTopic } from "../controllers/unsubscribeController.js";
 import { protect, authorize } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -34,6 +35,8 @@ router.get("/", protect, getAllArticles);
  * Endpoint: POST /articles/subscribe
  */
 router.post("/subscribe", protect, subscribeToTopic);
+
+router.post("/unsubscribe", protect, unsubscribeToTopic);
 
 /**
  * Get article by ID
